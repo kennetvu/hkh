@@ -1,0 +1,17 @@
+{
+	"version":"0.2",
+	"name": "My App",
+	"description": "Dummyapp",
+	"launch_path": "apps/dhis2/index.html",
+	"developer": {
+		"name": "Guess who",
+		"url": "http://your-homepage-here.org"
+	},
+	"default_locale": "en",
+	"activities": {
+		"dhis2": {
+			"href": "*"
+		}
+	}
+
+}
