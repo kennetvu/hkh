@@ -11,8 +11,17 @@ surveyApp.config(function($routeProvider){
 
 	.when('/home',{
 		templateUrl: 'view/home.html'
-	}).
-	otherwise({
+	})
+	.when('/form',{
+		templateUrl: 'view/form.html'
+	})
+	.when('/entry',{
+		templateUrl: 'view/entry.html'
+	})
+	.when('/survey',{
+		templateUrl: 'view/survey.html'
+	})
+	.otherwise({
 		rederictTo: '/home'
 	});
 
