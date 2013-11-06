@@ -32,7 +32,8 @@
 			</div>
 		</div>
 	</nav><!-- End navigation -->
-	<div class="container">
+	<div class="container" ng-controller="MainController">
+		
 		<!-- Remember to create rows and cols -->
 		<ng-view></ng-view>
 		
@@ -43,5 +44,26 @@
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/app.js"></script>
 	<script src="js/navbarController.js"></script>
+	<script src="js/userinfoController.js"></script>
+
+	<script>
+	/*
+	function authenticate(){
+		jQuery(document).ready(function() {
+			$.ajax({
+				type: "POST",
+				url: "http://oppsal.dyndns.info:8080/dhis/dhis-web-commons/security/login.action?authOnly=true", 
+				//headers: {'Access-Control-Allow-Headers: http://oppsal.dyndns.info:8080'},
+				data: {j_username: "admin", j_password: "district"},
+				username: "admin",
+				password: "district",
+				success: function(){
+					alert("yolo");
+				}
+			});
+		});
+
+	}*/
+	</script>
 </body>
 </html>
