@@ -1,1 +1,0 @@
-var surveyApp = angular.module('surveyApp');
