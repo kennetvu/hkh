@@ -1,4 +1,4 @@
-var surveyApp = angular.module('surveyApp', []);
+var surveyApp = angular.module('surveyApp.service', []);
 
 /*
 * Factory to get urlInfo. Should be injected everytime we need to talk with restful
@@ -44,9 +44,9 @@ surveyApp.factory('userInfo', function($http, urlInfo){
 	else{
 		url = urlInfo + '/api/me.json';
 	}
-	$http.get(url)
+	var promise = $http.get(url)
 	.success(function(data){
-		//console.log(data);
+		console.log(data);
 		username = data.userCredentials.username;
 		firstname = data.firstName;
 		lastname = data.surname;
@@ -57,6 +57,7 @@ surveyApp.factory('userInfo', function($http, urlInfo){
 		console.log(response + status);
 	});
 	return {
+		promise:promise,
 		getUsername: function(){return username;},
 		setUsername: function(name){
 			username = name;
