@@ -5,6 +5,7 @@
 	<title>Survey app written in angular</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="styles/bootstrap.min.css" media="screen">
+	<link rel="stylesheet" href="styles/style.css" media="screen">
 </head>
 <body>
 
@@ -32,11 +33,14 @@
 			</div>
 		</div>
 	</nav><!-- End navigation -->
-	<div class="container" ng-controller="MainController">
-		<!-- Remember to create rows and cols -->
-		<ng-view></ng-view>
+	<div class="wrap">
 		
+		<div class="container" ng-controller="MainController">
+			<!-- Remember to create rows and cols -->
+			<ng-view></ng-view>
+		</div>
 	</div>
+
 
 	<script src="scripts/vendor/angular.min.js"></script>
 	<script src="scripts/vendor/jquery-1.10.2.min.js"></script>
@@ -64,7 +68,7 @@
 			});
 		});
 
-	}*/
-	</script>
+}*/
+</script>
 </body>
 </html>
