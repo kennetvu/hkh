@@ -39,37 +39,80 @@ surveyApp.factory('userInfo', function($http, urlInfo){
 	var url = '';
 	console.log(urlInfo);
 	if(urlInfo == "localhost"){
-		url = 'data/me.json';
+		url = 'api/me.json';
 	}
 	else{
 		url = urlInfo + '/api/me.json';
 	}
-	var promise = $http.get(url)
-	.success(function(data){
+
+
+/*	url = 'http://apps.dhis2.org/demo/api/me.json';
+
+	var promise = $.ajax({
+		url: url,
+		dataType: 'json',
+		crossDomain: true
+	}).success(function(data){
 		console.log(data);
-		username = data.userCredentials.username;
-		firstname = data.firstName;
-		lastname = data.surname;
+	}).error(function(data){
+		console.log("fail yo");
+	});*/
+var promise = $http.get(url)
+.success(function(data){
+	console.log(data);
+	username = data.userCredentials.username;
+	firstname = data.firstName;
+	lastname = data.surname;
 
 
+})
+.error(function(response, status){
+	console.log(response + status);
+	console.log("it dosnt work with jsonp.");
+});
+return {
+	promise:promise,
+	getUsername: function(){return username;},
+	setUsername: function(name){
+		username = name;
+	},
+
+	getFirstname: function(){return firstname;},
+	setFirstname: function(name){
+		firstname = name;
+	},
+	getLastname: function(){return lastname;},
+	setLastname: function(name){
+		lastname = name;
+	}
+};
+});
+
+/*Programs*/
+surveyApp.factory('programsInfo', function($http, urlInfo){
+	var url = '';
+
+	if(urlInfo == "localhost"){
+		url = 'api/programs.json';
+	}
+	else{
+		url = urlInfo + '/api/programs.json';
+	}
+	var data;
+	console.log(url);
+	var promise = $http.get(url)
+	.success(function(response){
+		console.log(response.programs);
+		data = response;
 	})
 	.error(function(response, status){
 		console.log(response + status);
+		console.log("it dosnt work with jsonp.");
 	});
+	/*Parse data or return data? */
 	return {
-		promise:promise,
-		getUsername: function(){return username;},
-		setUsername: function(name){
-			username = name;
-		},
-
-		getFirstname: function(){return firstname;},
-		setFirstname: function(name){
-			firstname = name;
-		},
-		getLastname: function(){return lastname;},
-		setLastname: function(name){
-			lastname = name;
-		}
-	};
+		promise: promise,
+		data: function(){return data;}
+	}
 });
+/*Single events*/

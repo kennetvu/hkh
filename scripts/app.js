@@ -8,6 +8,9 @@ var surveyApp = angular.module('surveyApp', [
 	'surveyApp.service'
 	]);
 
+surveyApp.run(function($log){
+//	console.log($log);
+});
 surveyApp.config(function($routeProvider){
 	$routeProvider
 	.when('/',
@@ -19,8 +22,10 @@ surveyApp.config(function($routeProvider){
 	.when('/home',{
 		templateUrl: 'views/home.html'
 	})
-	.when('/form',{
-		templateUrl: 'views/form.html'
+	.when('/programs',{
+		templateUrl: 'views/programs.html',
+		controller:'ProgramController',
+		resolve: programInfo
 	})
 	.when('/entry',{
 		templateUrl: 'views/entry.html'
