@@ -1,4 +1,7 @@
-var surveyApp = angular.module('surveyApp.service', []);
+//'use strict';
+
+/*Services*/
+angular.module('surveyApp.services', ['ngResource'])
 
 /*
 * Factory to get urlInfo. Should be injected everytime we need to talk with restful
@@ -8,16 +11,15 @@ var surveyApp = angular.module('surveyApp.service', []);
 * Returns DHIS2/DEMO else. 
 * This factory returns without backslash
 */
-surveyApp.factory('urlInfo', function($location){
+.factory('urlInfo', function($location){
 	//console.log("From urlInfo " + $location.absUrl());
 	//console.log("host: " + $location.host());
 	// Check if host is localhost, if yes, get url from else where.
 	//Load from file? 
 	if($location.host() == "localhost"){
 		return $location.host();
-//		return "http://oppsal.dyndns.info:8080/dhis";
-}
-else{
+	}
+	else{
 		//If host is oppsal. remember to add port.
 		if($location.host() == "oppsal.dyndns.info"){
 			return "http://oppsal.dyndns.info:8080/dhis";
@@ -26,10 +28,19 @@ else{
 			return "http://apps.dhis2.org/demo";
 		}
 	}
-	
-});
+})
+/*Do a query against the server*/
+.factory('userInfo2', ['$resource', 'urlInfo', function($resource, urlInfo){
+	//console.log("URLINFO: " + urlInfo);
+	var url = urlInfo == "localhost" ? "api/me.json" : urlInfo+"/api/me.json";
+	//console.log("Url: " + url);
+	return $resource(url, {}, {
+		get: {method: 'GET', isArray:false}
+	});
+
+}])
 /*Descrive a user.*/
-surveyApp.factory('userInfo', function($http, urlInfo){
+.factory('userInfo', function($http, urlInfo){
 	var username = 'Not logged in';
 	var firstname = '';
 	var lastname = '';
@@ -86,10 +97,10 @@ return {
 		lastname = name;
 	}
 };
-});
+})
 
 /*Programs*/
-surveyApp.factory('programsInfo', function($http, urlInfo){
+.factory('programsInfo', function($http, urlInfo){
 	var url = '';
 
 	if(urlInfo == "localhost"){
