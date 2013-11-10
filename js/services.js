@@ -57,9 +57,20 @@ GET /programs/id = get programs by id
 
 /*Single events*/
 .factory('singleProgramInfo',['$resource', 'urlInfo', function($resource, urlInfo){
-	var url = urlInfo == "localhost" ? "api/programs" : urlInfo+"/api/programs.json";
+	var url = urlInfo == "localhost" ? "api/programs" : urlInfo+"/api/programs";
 	return $resource(url+"/:id", {id: "@id"}, {
 		getData: {method: 'GET', params: {id : 'id'}, headers: {'Content-Type': 'application/json'} }
 
+	});
+}])
+.factory('programStagesInfo', ['$resource', 'urlInfo', function($resource, urlInfo){
+	var url = urlInfo == "localhost" ? "api/programStages" : urlInfo+"/api/programStages";
+
+	return $resource(url+"/:id", {id: "@id"},{
+		getData: {
+			method: 'GET',
+			params: {id: 'id'},
+			headers: {'Content-Type': 'application/json'}
+		}
 	});
 }]);

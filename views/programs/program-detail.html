@@ -2,6 +2,17 @@ TBD: detail view for {{id}}
 <div class="row">
 	<div class="col-md-12">
 		<h1>{{programId.name}}</h1>
-		
+		<span ng-repeat="programStages in programId.programStages">
+			{{programStages.name}}
+		</span>
+		<br>
+		<br>
+		<span ng-repeat="dataElement in programStageDataElements">
+			{{dataElement.dataElement.name}} 
+			<input type="text"/>
+			<br/>
+		</span>
+
+
 	</div>
 </div>

@@ -42,6 +42,7 @@ angular.module('surveyApp.controllers', [])
 	$scope.programs = [];
 
 	programsInfo.get(function(data){
+		console.log(data);
 		angular.forEach(data.programs, function(value,key){
 			if(value.kind == 'SINGLE_EVENT_WITHOUT_REGISTRATION'){
 					$scope.programs.push(value);
@@ -49,7 +50,7 @@ angular.module('surveyApp.controllers', [])
 		});
 	});
 }])
-.controller('ProgramDetailController', ['$scope', '$http','$routeParams' ,'urlInfo','singleProgramInfo', function($scope, $http,$routeParams, urlInfo, singleProgramInfo){
+.controller('ProgramDetailController', ['$scope', '$http','$routeParams' ,'urlInfo','singleProgramInfo','programStagesInfo', function($scope, $http,$routeParams, urlInfo, singleProgramInfo, programStagesInfo){
 
 
 	console.log($routeParams.id);
@@ -57,6 +58,20 @@ angular.module('surveyApp.controllers', [])
 	singleProgramInfo.getData({id: $routeParams.id} , function(data){
 		//console.log(data);
 		$scope.programId = data;
+		//All singleevent program only have 1 stage.
+		parseStages(data.programStages[0].id);
+
 	});
+
+	function parseStages(idStage){
+		console.log(idStage);
+		programStagesInfo.getData({id: idStage}, function(data){
+			console.log(data);
+			$scope.programStageDataElements = data.programStageDataElements;
+			console.log(data.programStageDataElements);
+		});
+	}
+
+
 
 }]);
