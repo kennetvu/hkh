@@ -39,91 +39,27 @@ angular.module('surveyApp.services', ['ngResource'])
 	});
 
 }])
-/*Descrive a user.*/
-.factory('userInfo', function($http, urlInfo){
-	var username = 'Not logged in';
-	var firstname = '';
-	var lastname = '';
 
 
-	//tmp solution:
-	var url = '';
-	console.log(urlInfo);
-	if(urlInfo == "localhost"){
-		url = 'api/me.json';
-	}
-	else{
-		url = urlInfo + '/api/me.json';
-	}
+/*Programs
+GET /programs/ = get all programs
+GET /programs/id = get programs by id
 
+*/
+.factory('programsInfo', ['$resource', 'urlInfo', function($resource, urlInfo){
+	
+	var url = urlInfo == "localhost" ? "api/programs.json" : urlInfo+"/api/programs.json";
+	return $resource(url, {
 
-/*	url = 'http://apps.dhis2.org/demo/api/me.json';
-
-	var promise = $.ajax({
-		url: url,
-		dataType: 'json',
-		crossDomain: true
-	}).success(function(data){
-		console.log(data);
-	}).error(function(data){
-		console.log("fail yo");
-	});*/
-var promise = $http.get(url)
-.success(function(data){
-	console.log(data);
-	username = data.userCredentials.username;
-	firstname = data.firstName;
-	lastname = data.surname;
-
-
-})
-.error(function(response, status){
-	console.log(response + status);
-	console.log("it dosnt work with jsonp.");
-});
-return {
-	promise:promise,
-	getUsername: function(){return username;},
-	setUsername: function(name){
-		username = name;
-	},
-
-	getFirstname: function(){return firstname;},
-	setFirstname: function(name){
-		firstname = name;
-	},
-	getLastname: function(){return lastname;},
-	setLastname: function(name){
-		lastname = name;
-	}
-};
-})
-
-/*Programs*/
-.factory('programsInfo', function($http, urlInfo){
-	var url = '';
-
-	if(urlInfo == "localhost"){
-		url = 'api/programs.json';
-	}
-	else{
-		url = urlInfo + '/api/programs.json';
-	}
-	var data;
-	console.log(url);
-	var promise = $http.get(url)
-	.success(function(response){
-		console.log(response.programs);
-		data = response;
-	})
-	.error(function(response, status){
-		console.log(response + status);
-		console.log("it dosnt work with jsonp.");
+		get:{method: 'GET', params:{}, headers: {'Content-Type': 'application/json'}},
 	});
-	/*Parse data or return data? */
-	return {
-		promise: promise,
-		data: function(){return data;}
-	}
-});
+}])
+
 /*Single events*/
+.factory('singleProgramInfo',['$resource', 'urlInfo', function($resource, urlInfo){
+	var url = urlInfo == "localhost" ? "api/programs" : urlInfo+"/api/programs.json";
+	return $resource(url+"/:id", {id: "@id"}, {
+		getData: {method: 'GET', params: {id : 'id'}, headers: {'Content-Type': 'application/json'} }
+
+	});
+}]);

@@ -13,7 +13,11 @@ angular.module('surveyApp', [
 	});
 	$routeProvider.when('/programs',{
 		templateUrl: 'views/programs.html',
-		//controller:'ProgramController'
+		controller:'ProgramController'
+	});
+	$routeProvider.when('/programs/:id', {
+		templateUrl:'views/programs/program-detail.html',
+		controller: 'ProgramDetailController'
 	});
 	$routeProvider.when('/entry',{
 		templateUrl: 'views/entry.html'
@@ -28,3 +32,13 @@ angular.module('surveyApp', [
 	}//Function, routeProvider
 	]);
 
+/*
+Routing
+/programs
+/programs/12op3pOKOPKPO
+getJson(id)
+vis data.....
+
+/programs/:id = get survey for spesific survey
+
+*/

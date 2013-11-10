@@ -30,6 +30,9 @@
 					<li ng-class="{active: currentPage('/entry')}"><a href="#/entry">DataEntry</a></li>
 					<li ng-class="{active: currentPage('/survey')}"><a href="#/survey">Survey</a></li>
 				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a>Logged in as: {{user}}</a></li>
+				</ul>
 			</div>
 		</div>
 	</nav><!-- End navigation -->
@@ -42,7 +45,7 @@
 	</div>
 
 
-<!-- Angular -->
+	<!-- Angular -->
 	<script src="js/vendor/angular.min.js"></script>
 	<script src="js/vendor/angular-route.min.js"></script>
 	<script src="js/vendor/angular-resource.min.js"></script>

@@ -1,4 +1,4 @@
-<div class="row" ng-controller="ProgramController">
+<div class="row">
 	<div class="col-md-12">
 		<h1>Programs</h1>
 	</div>
@@ -14,7 +14,7 @@
 
 			<tbody>
 				<tr ng-repeat="program in programs">
-					<td>{{program.name}}</td>
+					<td><a href="#/programs/{{program.id}}">{{program.name}}</a></td>
 					<td>{{program.id}}</td>
 				</tr>
 			</tbody>
