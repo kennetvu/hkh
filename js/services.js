@@ -25,13 +25,17 @@ angular.module('surveyApp.services', ['ngResource'])
 			return "http://oppsal.dyndns.info:8080/dhis";
 		}// If dhis, just return url info? Remember to change this.
 		else{
-			return "http://apps.dhis2.org/demo";
+			//return "http://apps.dhis2.org/demo";
+			//Lazy fix to test on phone
+			return "http://" + $location.host() + "/survey/hkh";
 		}
 	}
 })
 /*Do a query against the server*/
 .factory('userInfo2', ['$resource', 'urlInfo', function($resource, urlInfo){
 	//console.log("URLINFO: " + urlInfo);
+	//Hvis local så er addressen api/me.json
+	// hvis ikke, så er den demo.dhis2.com/.... api/me.json
 	var url = urlInfo == "localhost" ? "api/me.json" : urlInfo+"/api/me.json";
 	//console.log("Url: " + url);
 	return $resource(url, {}, {
@@ -71,6 +75,29 @@ GET /programs/id = get programs by id
 			method: 'GET',
 			params: {id: 'id'},
 			headers: {'Content-Type': 'application/json'}
+		}
+	});
+}])
+/*Get single dataElement*/
+.factory('dataElement', ['$resource', 'urlInfo', function($resource, urlInfo){
+	var url = urlInfo == "localhost" ? "api/dataElements" : urlInfo+"/api/dataElements";
+
+	return $resource(url+"/:id", {id: "@id"},{
+		getData:{
+			method: 'GET',
+			params: {id: 'id'},
+			headers: {'Content-type': 'application/json'}
+		}
+	});
+}])
+.factory('optionSet', ['$resource', 'urlInfo', function($resource, urlInfo){
+	var url = urlInfo == "localhost" ? "api/optionSets" : urlInfo+"/api/optionSets";
+
+	return $resource(url+"/:id", {id: "@id"}, {
+		getData:{
+			method: 'GET',
+			params: {id: 'id'},
+			headers: {'Content-type': 'application/json'}
 		}
 	});
 }]);

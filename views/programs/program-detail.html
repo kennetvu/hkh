@@ -7,12 +7,26 @@ TBD: detail view for {{id}}
 		</span>
 		<br>
 		<br>
-		<span ng-repeat="dataElement in programStageDataElements">
-			{{dataElement.dataElement.name}} 
-			<input type="text"/>
-			<br/>
-		</span>
 
 
 	</div>
+	<div class="col-md-12">
+		<div class="row">
+			<div class="col-md-6">
+				<div ng-repeat="dataElement in programStageDataElements">
+					<form role="form">
+						<div class="form-group">
+							<label for="inputName">{{dataElement.dataElement.name}} </label>
+							<input type="{{dataElement.inputType}}" class="form-control" id="inputName" placeholder="{{dataElement.dataElement.name}}" ng-show="dataElement.showInput"/>
+							<select class="form-control"  ng-show="dataElement.showSelect">
+								<option ng-repeat="optionValues in dataElement.optionSetValues track by $index" value="{{optionValues}}">{{optionValues}}</option>
+
+							</select>
+						</div>
+					</div>
+				</form><!-- Form -->
+			</div><!-- ng-repeat -->
+		</div><!--col-offset-->
+	</div><!-- Row -->
 </div>
+
