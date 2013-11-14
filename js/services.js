@@ -25,9 +25,9 @@ angular.module('surveyApp.services', ['ngResource'])
 			return "http://oppsal.dyndns.info:8080/dhis";
 		}// If dhis, just return url info? Remember to change this.
 		else{
-			//return "http://apps.dhis2.org/demo";
+			return "http://apps.dhis2.org/demo";
 			//Lazy fix to test on phone
-			return "http://" + $location.host() + "/survey/hkh";
+			//return "http://" + $location.host() + "/survey/hkh";
 		}
 	}
 })

@@ -59,72 +59,118 @@ $scope.show = true;
 		});
 	});
 }])
-.controller('ProgramDetailController', ['$scope', '$http','$routeParams' ,'urlInfo','singleProgramInfo','programStagesInfo','dataElement','optionSet', function($scope, $http,$routeParams, urlInfo, singleProgramInfo, programStagesInfo,dataElement, optionSet){
+//ProgramDetailController -> Controller for programDetail sida.
+.controller('ProgramDetailController', ['$scope', '$filter','$routeParams' ,'urlInfo','singleProgramInfo','programStagesInfo','dataElement','optionSet', function($scope, $filter,$routeParams, urlInfo, singleProgramInfo, programStagesInfo,dataElement, optionSet){
 	//var s = [];
 
-	$scope.programStageDataElements = [];
+	//Create ng.show. for section and input?
+	//Watch their values, if their change. Create watch.
+	//$scope.programStageDataElements = [];
 
-	console.log($routeParams.id);
+	$scope.alert = {
+		show: false,
+		dataElement: '',
+		dataElementLength: ''
+	};
+	//console.log($routeParams.id);
 	$scope.id = $routeParams.id;
+	//Trenger egt ikke en sjekk. eller loop. er bare Single event
 	singleProgramInfo.getData({id: $routeParams.id} , function(data){
 		//console.log(data);
 		$scope.programId = data;
+		$scope.$broadcast('DataElementUpdate',{
+			//programId : data
+		});
 		//All singleevent program only have 1 stage.
-		parseStages(data.programStages[0].id);
+		//parseStages(data.programStages[0].id);
 
 	});
 
-	/**/
-	function parseStages(idStage){
-	//console.log(idStage);
-	programStagesInfo.getData({id: idStage}, function(data){
+	$scope.$on('DataSetUpdate', function(event, message){
+		//console.log("Im printing from dataSetUPdate");
+		console.log(message);
+		$scope.dataSent = message;
+		//var t = $filter('json')(message);
+		//console.log(t);
+	});
+
+}])
+//DataElementController -> Get all dataElement, post them out
+.controller('DataElementController',['$scope','urlInfo', 'programStagesInfo','dataElement','optionSet', function($scope, urlInfo, programStagesInfo, dataElement,optionSet){
+	console.log("DataElementController");
+	//console.log($scope.id);
+	//Update when parent contorller is done.
+	$scope.$on('DataElementUpdate', function(){
+		//Get program stages.
+		//then parse all data
+		programStagesInfo.getData({id: $scope.programId.programStages[0].id}, function(data){
 			//console.log(data);
-			//$scope.programStageDataElements = data.programStageDataElements;
-			//console.log(data.programStageDataElements);
-			parseDataElement(data.programStageDataElements);
+			$scope.programStageDataElements = data.programStageDataElements;
+			parseDataElements($scope.programStageDataElements);
 		});
-}
+	});
 
-function parseDataElement(idElement){
-	$scope.programStageDataElements = idElement;
-	//console.log(idElement);
-	angular.forEach($scope.programStageDataElements, function(value, key){
-		dataElement.getData({id: value.dataElement.id},function(data){
+	//$scope.dataSent = [];
+
+	$scope.submitData = function(){
+		/*Broadcast to bigcontroller yo*/
+		var data = {};
+		console.log($scope.programStageDataElements);
+		angular.forEach($scope.programStageDataElements, function(value, key){
+			if(value.userData !== undefined){
+				data[value.dataElement.id] = value.userData;
+			}
+		});
+		//console.log(data);
+		this.$emit('DataSetUpdate', data);
+		//$scope.dataSent = angular.copy(data);
+
+	};
+	function parseDataElements(programStageData){
+		console.log("parseDataElements");
+		console.log(programStageData);
+
+		angular.forEach(programStageData, function(value, key){
+			//console.log(value);
+			dataElement.getData({id: value.dataElement.id}, function(data){
+				//console.log(data);
+				value.showElement = true;
+				if(data.optionSet === null){
+					value.inputType = 'text';
+					value.showInput = true;
+					console.log(value);
+				}
+				else{
+					value.showSelect = true;
+					parseOptionSet(data.optionSet.id, key);
+				}
+			});
+		});
+	}
+	//Parse based on each dataElement
+	function parseOptionSet(id, key){
+		optionSet.getData({id: id}, function(data){
+			if(data.options.length < 50){
+				//console.log(data);
+				$scope.programStageDataElements[key].optionSetValues = data.options;
+				$scope.programStageDataElements[key].userData = data.options[0];
+				console.log("yolo");
+			//	console.log($scope.userData);
+
+		}
+		else{
 			console.log(data);
-			console.log(key);
-	//data.headers();
-			//De osm har option set håndter disse
-			if(data.optionSet === null){
-				/*if() -> If interger*/
-				//$scope.programStageDataElements.inputType = 'text';
-				value.inputType = 'text';
-				value.showInput = true;
-				//console.log($scope.programStageDataElements);
-				//$scope.programStageDataElement.type = "text";
-			}
-			else{
-				//Optionset
-				//value.inputType = 'password';
-				value.showSelect = true;
-				parseOptionSet(data.optionSet.id, key);
-				//console.log($scope.programStageDataElements);
-			}
-			//$scope.programStageDataElements = s;
-		});
-	//console.log($scope.programStageDataElements);
-});
-	//console.log(s);
+			$scope.programStageDataElements[key].showElement = false;
+			$scope.alert.show = true;
+			$scope.alert.dataElement = data.name;
+			$scope.alert.dataElementLength = data.options.length;
 
-}//Function
-
-function parseOptionSet(idOptionSet, key){
-	optionSet.getData({id: idOptionSet}, function(data){
-		$scope.programStageDataElements[key].optionSetValues = data.options;
-	});//optionsetGetdata
-
-
-}
-
-
+			console.log($scope.alert.message);
+		}
+	});
+	}
+/*	$scope.watch('programId', function(newValue, oldValue){
+		
+});*/
 
 }]);
