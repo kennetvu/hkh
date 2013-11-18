@@ -21,9 +21,15 @@ angular.module('surveyApp', [
 	});
 	$routeProvider.when('/entry',{
 		templateUrl: 'views/entry.html'
+
 	});
 	$routeProvider.when('/survey',{
-		templateUrl: 'views/survey.html'
+		templateUrl: 'views/survey.html',
+		controller: 'ProgramController'
+	});
+	$routeProvider.when('/skiplogic/:id', {
+		templateUrl: 'views/skiplogic/program-detail.html',
+		controller: 'SkipLogicDetailController'
 	});
 	$routeProvider.otherwise({
 		redirectTo: '/'

@@ -116,13 +116,27 @@ $scope.show = true;
 		/*Broadcast to bigcontroller yo*/
 		var data = {};
 		console.log($scope.programStageDataElements);
+		//Angular parser all data in til var data
 		angular.forEach($scope.programStageDataElements, function(value, key){
 			if(value.userData !== undefined){
 				data[value.dataElement.id] = value.userData;
 			}
 		});
-		//console.log(data);
 		this.$emit('DataSetUpdate', data);
+
+		//send data objektet til dhis sin server med post.
+		console.log(data);
+		/*Eksempel på objektet data
+		eMyVanycQSC: "wqewq"
+		fWIAEtYVEGk: "Discharged"
+		msodh3rEMJa: "21321"
+		oZg33kd9taw: "Male"	
+		qrur9Dvnyt5: "12312"*/
+
+		/*Parse to correct object before post to dhis.*/
+
+
+
 		//$scope.dataSent = angular.copy(data);
 
 	};
@@ -173,4 +187,9 @@ $scope.show = true;
 		
 });*/
 
+}])
+.controller('SkipLogicDetailController', ['$scope','$routeParams', function($scope, $routeParams){
+	$scope.id = $routeParams.id;
+
+	
 }]);
