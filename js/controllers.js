@@ -188,8 +188,28 @@ $scope.show = true;
 });*/
 
 }])
-.controller('SkipLogicDetailController', ['$scope','$routeParams', function($scope, $routeParams){
+//General controller for skip logic
+.controller('SkipLogicDetailController', ['$scope','$routeParams','singleProgramInfo', 'programStagesInfo',function($scope, $routeParams, singleProgramInfo, programStagesInfo){
 	$scope.id = $routeParams.id;
+	//Get program
+	singleProgramInfo.getData({id: $routeParams.id} , function(data){
+	
+		console.log(data);
+		parseDataElement(data.programStages[0].id);
+		//All singleevent program only have 1 stage.
+		//parseStages(data.programStages[0].id);
+	});
+
+	$scope.dataLength = 6;
+	//Send id to program stage
+	function parseDataElement(programStage){
+		programStagesInfo.getData({id: programStage}, function(data){
+			$scope.dataLength = data.programStageDataElements.length;
+			console.log($scope.dataLength);
+			console.log(data.programStageDataElements);
+			$scope.dataElements = data.programStageDataElements;
+		});
+	}
 
 	
 }]);

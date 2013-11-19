@@ -6,3 +6,8 @@ body {
 .dataElement{
 	margin-bottom: 20px;
 }
+
+
+.select-skipLogic{
+	width:100%;
+}
